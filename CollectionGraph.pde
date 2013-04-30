@@ -1,9 +1,9 @@
 import peasy.*;
 
-int graphScale = 15;
-int graphSpacing = 100;
-int numberOfDays = 366+365+365+365+365;
-int numberOfClassifications = 56;
+int graphScale = 15; 
+int graphSpacing = 100; //the distance between the graph lines
+int numberOfDays = 0;
+int numberOfGraphLines = 0;
 int[][] pagePoints;
 String[] labels;
 
@@ -30,7 +30,7 @@ void draw() {
   noFill();
   stroke(255);
 
-  for (int c=0; c<numberOfClassifications-1; c++) {   
+  for (int c=0; c<numberOfGraphLines-1; c++) {   
     pushMatrix();
     translate(0, height/2, c*-graphSpacing);
 
@@ -65,12 +65,30 @@ void draw() {
 
 void loadData() {
   String bits[];
-  String lines[] = loadStrings("data.csv");
+  //Load some labels for the graph
+  String lines[] = loadStrings("data-labels.csv");
+  
+  //Initialize an array to hold the labels (they are stored in alphabetical order)
+  labels = new String[lines.length-1];
+  numberOfGraphLines = labels.length;
+
+  //Start at one to skip the header row
+  for (int i=1; i<lines.length; i++) {
+    bits = split(lines[i], ",");
+    labels[i-1] = bits[0];
+  }  
   println("Loaded " + lines.length + " bits of data");
 
-  pagePoints = new int[numberOfClassifications][numberOfDays];
+  //Load the data we are going to graph
+  lines = loadStrings("data.csv");
+  
+  //We can calculate the number of days to graph because of the structure of the data file
+  numberOfDays = (lines.length-1)/numberOfGraphLines;
 
-  int classificationCounter = 0;
+  //Initialize a 2D array to hold the graph data
+  pagePoints = new int[numberOfGraphLines][numberOfDays];
+
+  int graphLineCounter = 0;
   int dayCounter = 0;
 
   //Start at one to skip the header row
@@ -79,24 +97,13 @@ void loadData() {
 
     pagePoints[int(bits[3])-1][dayCounter] = int(bits[4]);
 
-    classificationCounter++;
-    if (classificationCounter == numberOfClassifications) {
-      classificationCounter = 0;
+    graphLineCounter++;
+    if (graphLineCounter == numberOfGraphLines) {
+      graphLineCounter = 0;
       dayCounter++;
     }
   }  
-
-  
-  lines = loadStrings("data-labels.csv");
   println("Loaded " + lines.length + " bits of data");
-  
-  labels = new String[lines.length];
-  
-  //Start at one to skip the header row
-  for (int i=1; i<lines.length; i++) {
-    bits = split(lines[i], ",");
-    labels[i-1] = bits[0];
-  }
 }
 
 
