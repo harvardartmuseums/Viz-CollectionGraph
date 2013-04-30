@@ -7,6 +7,7 @@ int numberOfGraphLines = 0;
 int[][] pagePoints;
 String[] labels;
 
+Boolean paused = false;
 Boolean startupAnimation = true;
 int startupFrameCounter = 0;
 
@@ -55,7 +56,7 @@ void draw() {
     popMatrix();
   }
 
-  if (startupAnimation) {
+  if (startupAnimation && !paused) {
     startupFrameCounter++;
     if (startupFrameCounter == numberOfDays) {
       startupAnimation = false;
@@ -106,5 +107,13 @@ void loadData() {
   println("Loaded " + lines.length + " bits of data");
 }
 
+void keyPressed() {
+  if (keyCode == KeyEvent.VK_SPACE) {
+    paused = !paused;
+  } else if (keyCode == KeyEvent.VK_R) {
+    startupFrameCounter = 0;
+    startupAnimation = true;
+  }
+}
 
 
