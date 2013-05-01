@@ -110,9 +110,13 @@ void loadData() {
 void keyPressed() {
   if (keyCode == KeyEvent.VK_SPACE) {
     paused = !paused;
+    
   } else if (keyCode == KeyEvent.VK_R) {
     startupFrameCounter = 0;
     startupAnimation = true;
+    
+  } else if (keyCode == KeyEvent.VK_ENTER) {
+    saveFrame("snapshots/snapshot-####.png");
   }
 }
 
