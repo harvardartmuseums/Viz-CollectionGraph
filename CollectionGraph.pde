@@ -7,8 +7,10 @@ int numberOfGraphLines = 0;
 int[][] pagePoints;
 String[] labels;
 
+Boolean recording = false;
 Boolean paused = false;
 Boolean startupAnimation = true;
+Boolean cameraTracking = false;
 int startupFrameCounter = 0;
 
 PeasyCam cam;
@@ -22,11 +24,20 @@ void setup() {
   font = createFont("Arial", 32);
   textFont(font, 32);
   
-  cam = new PeasyCam(this, (numberOfDays*graphScale)/2, 0, 0, 750);
+  if (cameraTracking) {
+    cam = new PeasyCam(this, 0, 0, 0, 750);
+  } else {
+    cam = new PeasyCam(this, (numberOfDays*graphScale)/2, 0, 0, 750);
+  }
+
 }
 
 void draw() {
   background(128);
+
+  if (cameraTracking) {
+    cam.lookAt(startupFrameCounter*graphScale, 0, 750);
+  }
 
   noFill();
   stroke(255);
@@ -51,11 +62,16 @@ void draw() {
         vertex((i+1)*graphScale, -pagePoints[c][i+1], 0); 
         endShape();        
       }
+      text(labels[c], (startupFrameCounter*graphScale) + 25, 0, 0);
     }
 
     popMatrix();
   }
-
+  
+  if (recording) {
+    saveFrame("output/frames####.png");
+  }
+  
   if (startupAnimation && !paused) {
     startupFrameCounter++;
     if (startupFrameCounter == numberOfDays) {
@@ -114,6 +130,9 @@ void keyPressed() {
   } else if (keyCode == KeyEvent.VK_R) {
     startupFrameCounter = 0;
     startupAnimation = true;
+    
+  } else if (keyCode == KeyEvent.VK_C) {
+    cameraTracking = !cameraTracking;
     
   } else if (keyCode == KeyEvent.VK_ENTER) {
     saveFrame("snapshots/snapshot-####.png");
