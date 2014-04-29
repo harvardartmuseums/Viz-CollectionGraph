@@ -1,5 +1,14 @@
 Viz-CollectionPageViewGraph
 ===========================
-This is a Processing sketch that graphs collection object page views.
+This is a Processing sketch that graphs collection object page views clustered by classification.
 
-It works with Processing 1.5.1 and requires PeasyCam.
+Requirements
+------------
+
+Processing 1.5.1<br />
+PeasyCam Libraries<br />
+
+Demo
+----
+
+Coming soon...
