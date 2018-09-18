@@ -1,4 +1,5 @@
 import peasy.*;
+import java.awt.event.KeyEvent;
 
 int highlightIndex = 0;
 int graphScale = 15; 
@@ -14,6 +15,7 @@ color highlight = #FFFFFF;
 Boolean recording = false;
 Boolean paused = false;
 Boolean startupAnimation = true;
+Boolean hideUnselected = false;
 Boolean cameraTracking = true;
 int startupFrameCounter = 0;
 
@@ -22,7 +24,7 @@ PeasyCam cam;
 PFont font;
 
 void setup() {
-  size(screenWidth, screenHeight, P3D);
+  fullScreen(P3D, SPAN);
   loadData();
 
   font = createFont("Arial", 32);
@@ -53,27 +55,34 @@ void draw() {
       highlight = #FFFFFF;
     }
     
+    
+    
     if (startupAnimation) {
       stopIndex = startupFrameCounter;
     } else {
       stopIndex = numberOfDays;
     }
     
-    //draw the graph line
-    noFill();
-    stroke(highlight);
-    for (int i=0; i<stopIndex-1; i++) {
-      beginShape(LINES);
-      vertex(i*graphScale, -pagePoints[c][i], 0);
-      vertex((i+1)*graphScale, -pagePoints[c][i+1], 0); 
-      endShape();
+    
+    if (!hideUnselected || (hideUnselected && (c==highlightIndex))) {
+      
+      //draw the graph line
+      noFill();
+      stroke(highlight);
+      for (int i=0; i<stopIndex-1; i++) {
+        beginShape(LINES);
+        vertex(i*graphScale, -pagePoints[c][i], 0);
+        vertex((i+1)*graphScale, -pagePoints[c][i+1], 0); 
+        endShape();
+      }
+      
+      //draw the label on the graph line
+      fill(highlight);
+      text(labels[c], (stopIndex*graphScale) + 25, 0, 0);
     }
     
-    //draw the label on the graph line
-    fill(highlight);
-    text(labels[c], (stopIndex*graphScale) + 25, 0, 0);
-    
     popMatrix();
+
   }
   
   //Show the last day
@@ -95,4 +104,3 @@ void draw() {
     }
   }
 }
-

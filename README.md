@@ -5,10 +5,5 @@ This is a Processing sketch that graphs collection object page views clustered b
 Requirements
 ------------
 
-Processing 1.5.1<br />
+Processing 3<br />
 PeasyCam Libraries<br />
-
-Demo
-----
-
-Coming soon...

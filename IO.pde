@@ -11,6 +11,9 @@ void keyPressed() {
     
   } else if (keyCode == KeyEvent.VK_ENTER) {
     saveFrame("snapshots/snapshot-####.png");
+    
+  } else if (keyCode == KeyEvent.VK_H) {
+    hideUnselected = !hideUnselected;
   }
   
   //scroll forward through the set of suns
